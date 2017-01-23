@@ -1,0 +1,25 @@
+{
+    "name": "taranto/csv-parser",
+    "type": "library",
+    "description": "Simple CSV parser",
+    "keywords": ["CSV", "parser", "read"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Renan Taranto",
+            "email": "renantaranto@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7.6"
+    },
+    "autoload": {
+        "psr-4": { "Taranto\\CsvParser\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Taranto\\CsvParser\\Tests\\": "tests/" }
+    }
+}
