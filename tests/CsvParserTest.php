@@ -47,7 +47,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsArray($this->csvFileName));
     }
     
-    public function testGetCsvAsAssociativeArrayWithoutBlankHeaders()
+    public function testGetCsvAsAssociativeArrayIgnoringBlankHeaders()
     {
         $csvParser = new CsvParser();
         $expectedArray = [
@@ -56,5 +56,16 @@ class CsvParserTest extends TestCase
             ['Brand' => 'Landyachtz', 'Modality' => 'Downhill', 'Color' => '"Blue"'],
         ];
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray($this->csvFileName));
+    }
+    
+    public function testGetCsvAsAssociativeArrayWithBlankHeaders()
+    {
+        $csvParser = new CsvParser();
+        $expectedArray = [
+            ['Brand' => 'Sector 9', 'Modality' => 'Freeride', 'Color' => 'White', '' => ''],
+            ['Brand' => 'ABEC 11', 'Modality' => 'Freeride', 'Color' => '', '' => ''],
+            ['Brand' => 'Landyachtz', 'Modality' => 'Downhill', 'Color' => '"Blue"', '' => 'Great downhill wheels'],
+        ];
+        $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray($this->csvFileName, ',', false));
     }
 }

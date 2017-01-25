@@ -9,10 +9,11 @@ namespace Taranto\CsvParser;
  */
 class CsvParser
 {
-    public function getCsvAsAssociativeArray(string $fileName, string $delimiter = ','): array
+    public function getCsvAsAssociativeArray(string $fileName, string $delimiter = ',', bool $ignoreBlankHeaders = true): array
     {
         $csvAsArray = $this->getCsvAsArray($fileName, $delimiter);
-        $header = array_filter(array_shift($csvAsArray));
+        $header = $this->createHeader($csvAsArray, $ignoreBlankHeaders);
+        array_shift($csvAsArray);
         $csvAsAssociativeArray = [];
         foreach ($csvAsArray as $row) {
             $indexedRow = [];
@@ -32,6 +33,15 @@ class CsvParser
             $csvAsArray[] = $row;
         }
         return $csvAsArray;
+    }
+    
+    private function createHeader(array $csvAsArray, bool $ignoreBlankHeaders): array
+    {
+        if ($ignoreBlankHeaders) {
+            return array_filter(array_shift($csvAsArray));
+        }
+        
+        return array_shift($csvAsArray);
     }
 
 }
