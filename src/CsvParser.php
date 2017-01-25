@@ -9,11 +9,16 @@ namespace Taranto\CsvParser;
  */
 class CsvParser
 {
-    public function getCsvAsAssociativeArray(string $fileName, string $delimiter = ',', bool $ignoreBlankHeaders = true): array
+    public function getCsvAsAssociativeArray(
+        string $fileName,
+        string $delimiter = ',',
+        bool $ignoreBlankHeaders = true,
+        int $offset = 0,
+        int $limit = 0
+    ): array
     {
-        $csvAsArray = $this->getCsvAsArray($fileName, $delimiter);
-        $header = $this->createHeader($csvAsArray, $ignoreBlankHeaders);
-        array_shift($csvAsArray);
+        $header = $this->createHeader($this->getCsvAsArray($fileName, $delimiter, 0, 1), $ignoreBlankHeaders);
+        $csvAsArray = $this->getCsvAsArray($fileName, $delimiter, $offset + 1, $limit);
         $csvAsAssociativeArray = [];
         foreach ($csvAsArray as $row) {
             $indexedRow = [];
@@ -25,19 +30,29 @@ class CsvParser
         return $csvAsAssociativeArray;
     }
 
-    public function getCsvAsArray(string $fileName, string $delimiter = ',', int $limit = null): array
+    public function getCsvAsArray(string $fileName, string $delimiter = ',', int $offset = 0, int $limit = 0): array
     {
         $fp = fopen($fileName, "r");
         $csvAsArray = [];
         
-        $currentLineIndex = 0;
+        $currentRowIndex = 0;
+        $numberOfRowsParsed = 0;
         while (($row = fgetcsv($fp, 0, $delimiter)) !== false) {
-            if ($limit and $currentLineIndex >= $limit) {
+            if ($offset !== 0 and $currentRowIndex < $offset) {
+                $currentRowIndex++;
+                continue;
+            }
+            
+            if ($limit !== 0 and $numberOfRowsParsed >= $limit) {
                 return $csvAsArray;
             }
+            
             $csvAsArray[] = $row;
-            $currentLineIndex++;
+            $currentRowIndex++;
+            $numberOfRowsParsed++;
         }
+        
+        fclose($fp);
         return $csvAsArray;
     }
     
