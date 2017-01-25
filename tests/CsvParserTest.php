@@ -47,6 +47,16 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsArray($this->csvFileName));
     }
     
+    public function testGetCsvAsArrayWithLimit()
+    {
+        $csvParser = new CsvParser();
+        $expectedArray  = [
+            ['Brand', 'Modality', 'Color', ''],
+            ['Sector 9', 'Freeride', 'White'],
+        ];
+        $this->assertEquals($expectedArray, $csvParser->getCsvAsArray($this->csvFileName, ',', 2));
+    }
+    
     public function testGetCsvAsAssociativeArrayIgnoringBlankHeaders()
     {
         $csvParser = new CsvParser();

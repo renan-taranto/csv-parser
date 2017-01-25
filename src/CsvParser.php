@@ -25,12 +25,18 @@ class CsvParser
         return $csvAsAssociativeArray;
     }
 
-    public function getCsvAsArray(string $fileName, string $delimiter = ','): array
+    public function getCsvAsArray(string $fileName, string $delimiter = ',', int $limit = null): array
     {
         $fp = fopen($fileName, "r");
         $csvAsArray = [];
+        
+        $currentLineIndex = 0;
         while (($row = fgetcsv($fp, 0, $delimiter)) !== false) {
+            if ($limit and $currentLineIndex >= $limit) {
+                return $csvAsArray;
+            }
             $csvAsArray[] = $row;
+            $currentLineIndex++;
         }
         return $csvAsArray;
     }
