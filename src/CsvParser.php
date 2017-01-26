@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Taranto\CsvParser;
 
 /**
@@ -7,62 +9,58 @@ namespace Taranto\CsvParser;
  *
  * @author Renan Taranto <renantaranto@gmail.com>
  */
-class CsvParser
+class CsvParser implements \IteratorAggregate
 {
-    public function getCsvAsAssociativeArray(
+    /**
+     * @var CsvIterator;
+     */
+    private $iterator;
+    
+    public function __construct(
         string $fileName,
-        string $delimiter = ',',
+        bool $asAssociativeArray = false,
         bool $ignoreBlankHeaders = true,
         int $offset = 0,
-        int $limit = 0
-    ): array
-    {
-        $header = $this->createHeader($this->getCsvAsArray($fileName, $delimiter, 0, 1), $ignoreBlankHeaders);
-        $csvAsArray = $this->getCsvAsArray($fileName, $delimiter, $offset + 1, $limit);
-        $csvAsAssociativeArray = [];
-        foreach ($csvAsArray as $row) {
-            $indexedRow = [];
-            for ($i = 0; $i < count($header); $i++) {
-                $indexedRow[$header[$i]] = isset($row[$i]) ? $row[$i] : '';
-            }
-            $csvAsAssociativeArray[] = $indexedRow;
-        }
-        return $csvAsAssociativeArray;
-    }
-
-    public function getCsvAsArray(string $fileName, string $delimiter = ',', int $offset = 0, int $limit = 0): array
-    {
-        $fp = fopen($fileName, "r");
-        $csvAsArray = [];
+        int $limit = 0,
+        string $delimiter = null
+    ) {
+        $this->throwInvalidArgumenExceptionIfFileNotFound($fileName);
         
-        $currentRowIndex = 0;
-        $numberOfRowsParsed = 0;
-        while (($row = fgetcsv($fp, 0, $delimiter)) !== false) {
-            if ($offset !== 0 and $currentRowIndex < $offset) {
-                $currentRowIndex++;
-                continue;
-            }
-            
-            if ($limit !== 0 and $numberOfRowsParsed >= $limit) {
-                return $csvAsArray;
-            }
-            
-            $csvAsArray[] = $row;
-            $currentRowIndex++;
-            $numberOfRowsParsed++;
+        $this->iterator = new CsvIterator($fileName);
+        if ($asAssociativeArray) {
+            $this->iterator->useFirstRowAsHeader($ignoreBlankHeaders);
         }
-        
-        fclose($fp);
-        return $csvAsArray;
+        $this->iterator->applyOffset($offset);
+        $this->iterator->setLimit($limit);
     }
     
-    private function createHeader(array $csvAsArray, bool $ignoreBlankHeaders): array
+    
+    private function throwInvalidArgumenExceptionIfFileNotFound(string $fileName)
     {
-        if ($ignoreBlankHeaders) {
-            return array_filter(array_shift($csvAsArray));
+        if (!file_exists($fileName)) {
+            throw new \InvalidArgumentException('File not found: ' . $fileName);
         }
-        
-        return array_shift($csvAsArray);
     }
-
+    
+    public function getCsvAsArray(int $offset = 0, int $limit = 0): array
+    {
+        $this->iterator->applyOffset($offset);
+        $this->iterator->setLimit($limit);
+        
+        return iterator_to_array($this->iterator);
+    }
+    
+    public function getCsvAsAssociativeArray(int $offset = 0, int $limit = 0, bool $ignoreBlankHeaders = true): array
+    {
+        $this->iterator->useFirstRowAsHeader($ignoreBlankHeaders);
+        $this->iterator->applyOffset($offset);
+        $this->iterator->setLimit($limit);
+        
+        return iterator_to_array($this->iterator);
+    }
+    
+    public function getIterator(): \Traversable
+    {
+        return $this->iterator;
+    }
 }
