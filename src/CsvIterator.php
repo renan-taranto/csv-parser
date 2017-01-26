@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace Taranto\CsvParser;
 
+/**
+ * @author Renan Taranto <renantaranto@gmail.com>
+ */
 class CsvIterator implements \Iterator
 {
     /**
      * @var mixed
      */
     private $filePointer;
+    
+    /**
+     * @var string
+     */
+    private $delimiter;
     
     /**
      * @var int 
@@ -31,41 +39,60 @@ class CsvIterator implements \Iterator
      */
     private $header;
     
-    public function __construct(string $fileName)
+    /**
+     * @param string $fileName
+     * @param string $delimiter
+     */
+    public function __construct(string $fileName, string $delimiter)
     {
         $this->filePointer = fopen($fileName, "r");
+        $this->delimiter = $delimiter;
     }
 
     /**
      * @param bool $ignoreBlankHeaders Whether first line blank cells should be 
      *                                used as header
-     * @return void
+     * @return CsvIterator
      */
-    public function useFirstRowAsHeader(bool $ignoreBlankHeaders = true): void
+    public function useFirstRowAsHeader(bool $ignoreBlankHeaders = true): self
     {
         if ($ignoreBlankHeaders) {
-            $this->header = array_filter(fgetcsv($this->filePointer, 0, ','));
-            return;
+            $this->header = array_filter(fgetcsv($this->filePointer, 0, $this->delimiter));
+            return $this;
         }
-        $this->header = fgetcsv($this->filePointer, 0, ',');
+        $this->header = fgetcsv($this->filePointer, 0, $this->delimiter);
+        return $this;
     }
     
-    public function setLimit($limit)
+    /**
+     * @param int $limit
+     * @return CsvIterator
+     */
+    public function setLimit(int $limit): self
     {
         $this->limit = $limit;
+        return $this;
     }
 
-    public function applyOffset(int $offset): void
+    /**
+     * @param int $offset
+     * @return CsvIterator
+     */
+    public function applyOffset(int $offset): self
     {
         $this->offset = $offset;
         for ($i = 0; $i < $offset; $i++) {
-            fgetcsv($this->filePointer, 0, ',');
+            fgetcsv($this->filePointer, 0, $this->delimiter);
         }
+        return $this;
     }
-        
-    public function current()
+
+    /**
+     * @return array
+     */
+    public function current(): array
     {
-        $row = fgetcsv($this->filePointer, 0, ',');
+        $row = fgetcsv($this->filePointer, 0, $this->delimiter);
         if (!$this->header) {
             return $row;
         }
@@ -77,6 +104,9 @@ class CsvIterator implements \Iterator
         return $indexedRow;
     }
 
+    /**
+     * @return int
+     */
     public function key(): int
     {
         return $this->rowCounter;
@@ -92,6 +122,9 @@ class CsvIterator implements \Iterator
         $this->rowCounter = 0;
     }
 
+    /**
+     * @return bool
+     */
     public function valid(): bool
     {
         if (
@@ -103,5 +136,9 @@ class CsvIterator implements \Iterator
         }
         return true;
     }
-
+    
+    public function __destruct()
+    {
+        fclose($this->filePointer);
+    }
 }

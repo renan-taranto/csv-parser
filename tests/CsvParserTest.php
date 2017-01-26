@@ -9,13 +9,10 @@ use Taranto\CsvParser\CsvParser;
 class CsvParserTest extends TestCase
 {
     /**
-     * @var string Path of the CSV fixture
+     * @var string Virtual CSV file 
      */
     private $csvFileName;
     
-    /**
-     * set up test environment 
-     */
     public function setUp()
     {
         vfsStream::setup();
@@ -30,7 +27,7 @@ class CsvParserTest extends TestCase
             ['Landyachtz', "Downhill", '"Blue"', 'Great downhill wheels']
         ];
         foreach ($list as $fields) {
-            fputcsv($fp, $fields, ',');
+            fputcsv($fp, $fields);
         }
         fclose($fp);
     }
