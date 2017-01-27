@@ -21,7 +21,7 @@ class CsvParserTest extends TestCase
         
         $fp = fopen($this->csvFileName, 'w');
         $list = [
-            ['Brand', 'Modality', 'Color', ''],
+            ['Brand', 'Modality', 'Color', chr(32)],
             ['Sector 9', 'Freeride', 'White'],
             ['ABEC 11', 'Freeride'],
             ['Landyachtz', "Downhill", '"Blue"', 'Great downhill wheels']
@@ -42,7 +42,7 @@ class CsvParserTest extends TestCase
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray  = [
-            ['Brand', 'Modality', 'Color', ''],
+            ['Brand', 'Modality', 'Color', chr(32)],
             ['Sector 9', 'Freeride', 'White'],
             ['ABEC 11', 'Freeride'],
             ['Landyachtz', "Downhill", '"Blue"', 'Great downhill wheels']
@@ -65,7 +65,7 @@ class CsvParserTest extends TestCase
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray  = [
-            ['Brand', 'Modality', 'Color', ''],
+            ['Brand', 'Modality', 'Color', chr(32)],
             ['Sector 9', 'Freeride', 'White'],
             ['ABEC 11', 'Freeride']
         ];
@@ -97,9 +97,9 @@ class CsvParserTest extends TestCase
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
-            ['Brand' => 'Sector 9', 'Modality' => 'Freeride', 'Color' => 'White', '' => ''],
-            ['Brand' => 'ABEC 11', 'Modality' => 'Freeride', 'Color' => '', '' => ''],
-            ['Brand' => 'Landyachtz', 'Modality' => 'Downhill', 'Color' => '"Blue"', '' => 'Great downhill wheels']
+            ['Brand' => 'Sector 9', 'Modality' => 'Freeride', 'Color' => 'White', chr(32) => ''],
+            ['Brand' => 'ABEC 11', 'Modality' => 'Freeride', 'Color' => '', chr(32) => ''],
+            ['Brand' => 'Landyachtz', 'Modality' => 'Downhill', 'Color' => '"Blue"', chr(32) => 'Great downhill wheels']
         ];
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(0, 0, false));
     }
@@ -136,7 +136,7 @@ class CsvParserTest extends TestCase
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
-            ['Brand' => 'Landyachtz', 'Modality' => 'Downhill', 'Color' => '"Blue"', '' => 'Great downhill wheels']
+            ['Brand' => 'Landyachtz', 'Modality' => 'Downhill', 'Color' => '"Blue"', chr(32) => 'Great downhill wheels']
         ];
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(2, 1, false));
     }
@@ -154,7 +154,7 @@ class CsvParserTest extends TestCase
             }
         }
         $expectedRows = [
-            ['Brand', 'Modality', 'Color', ''],
+            ['Brand', 'Modality', 'Color', chr(32)],
             ['Sector 9', 'Freeride', 'White']
         ];
         $this->assertEquals($expectedRows, $returnedRows);

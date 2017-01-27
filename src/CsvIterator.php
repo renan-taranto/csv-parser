@@ -57,7 +57,12 @@ class CsvIterator implements \Iterator
     public function useFirstRowAsHeader(bool $ignoreBlankHeaders = true): self
     {
         if ($ignoreBlankHeaders) {
-            $this->header = array_filter(fgetcsv($this->filePointer, 0, $this->delimiter));
+            $this->header = array_filter(
+                fgetcsv($this->filePointer, 0, $this->delimiter),
+                function($el) {
+                    return !empty(trim($el));
+                }
+            );
             return $this;
         }
         $this->header = fgetcsv($this->filePointer, 0, $this->delimiter);
