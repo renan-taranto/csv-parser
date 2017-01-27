@@ -129,12 +129,27 @@ class CsvIterator implements \Iterator
     {
         if (
             !$this->filePointer or
-            feof($this->filePointer) or
+            $this->isEndOfFile() or
             ($this->limit and $this->rowCounter >= $this->limit)
         ) {
             return false;
         }
         return true;
+    }
+    
+    /**
+     * @return bool
+     */
+    private function isEndOfFile(): bool
+    {
+        $currentFpPosition = ftell($this->filePointer);
+        
+        if (!fgetc($this->filePointer)) {
+            return true;
+        }
+        
+        fseek($this->filePointer, $currentFpPosition);
+        return false;
     }
     
     public function __destruct()
