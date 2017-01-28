@@ -1,6 +1,6 @@
 language: php
 php:
-  - '7.1'
+  - '7.0'
 
 before_script:
   - composer require satooshi/php-coveralls
@@ -11,4 +11,3 @@ script:
 
 after_script:
   - php vendor/bin/coveralls -v
-  

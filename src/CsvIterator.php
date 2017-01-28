@@ -112,12 +112,12 @@ class CsvIterator implements \Iterator
         return $this->rowCounter;
     }
 
-    public function next(): void
+    public function next()
     {
         $this->rowCounter++;
     }
 
-    public function rewind(): void
+    public function rewind()
     {
         $this->rowCounter = 0;
     }

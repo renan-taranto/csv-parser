@@ -73,7 +73,7 @@ class CsvParser implements \IteratorAggregate
      * @param string $fileName
      * @throws \InvalidArgumentException
      */
-    private function throwInvalidArgumenExceptionIfFileNotFound(string $fileName): void
+    private function throwInvalidArgumenExceptionIfFileNotFound(string $fileName)
     {
         if (!file_exists($fileName)) {
             throw new \InvalidArgumentException('File not found: ' . $fileName);

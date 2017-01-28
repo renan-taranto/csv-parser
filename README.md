@@ -14,7 +14,7 @@ An easy to use CSV parser
 - Performance wise parsing while using as an iterator.
 
 ### Requirements
-- PHP 7.1.
+- PHP 7.0 or later.
 
 ### Installation
 ```
