@@ -1,7 +1,7 @@
 {
     "name": "taranto/csv-parser",
     "type": "library",
-    "description": "Simple CSV parser",
+    "description": "CSV parser for PHP7.0 or later",
     "keywords": ["CSV", "parser", "read"],
     "license": "MIT",
     "authors": [
