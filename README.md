@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/renan-taranto/csv-parser.svg?branch=master)](https://travis-ci.org/renan-taranto/csv-parser)
+[![Coverage Status](https://coveralls.io/repos/github/renan-taranto/csv-parser/badge.svg?branch=master)](https://coveralls.io/github/renan-taranto/csv-parser?branch=master)
 
 CSV Parser
 ======
