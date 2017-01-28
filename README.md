@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/renan-taranto/csv-parser.svg?branch=master)](https://travis-ci.org/renan-taranto/csv-parser)
 
 CSV Parser
 ======
