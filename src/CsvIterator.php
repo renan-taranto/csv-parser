@@ -20,11 +20,6 @@ class CsvIterator implements \Iterator
     private $delimiter;
     
     /**
-     * @var int 
-     */
-    private $offset;
-    
-    /**
      * @var int
      */
     private $limit;
@@ -85,7 +80,6 @@ class CsvIterator implements \Iterator
      */
     public function applyOffset(int $offset): self
     {
-        $this->offset = $offset;
         for ($i = 0; $i < $offset; $i++) {
             fgetcsv($this->filePointer, 0, $this->delimiter);
         }
@@ -103,7 +97,8 @@ class CsvIterator implements \Iterator
         }
         
         $indexedRow = [];
-        for ($i = 0; $i < count($this->header); $i++) {
+        $numberOfHeaders = count($this->header);
+        for ($i = 0; $i < $numberOfHeaders; $i++) {
             $indexedRow[$this->header[$i]] = isset($row[$i]) ? $row[$i] : '';
         }
         return $indexedRow;
@@ -133,9 +128,9 @@ class CsvIterator implements \Iterator
     public function valid(): bool
     {
         if (
-            !$this->filePointer or
-            $this->isEndOfFile() or
-            ($this->limit and $this->rowCounter >= $this->limit)
+            !$this->filePointer ||
+            $this->isEndOfFile() ||
+            ($this->limit && $this->rowCounter >= $this->limit)
         ) {
             return false;
         }

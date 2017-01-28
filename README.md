@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/renan-taranto/csv-parser.svg?branch=master)](https://travis-ci.org/renan-taranto/csv-parser)
 [![Coverage Status](https://coveralls.io/repos/github/renan-taranto/csv-parser/badge.svg?branch=master)](https://coveralls.io/github/renan-taranto/csv-parser?branch=master)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/e3bb2293-6598-45e8-b016-b268290d9023/big.png)](https://insight.sensiolabs.com/projects/e3bb2293-6598-45e8-b016-b268290d9023)
 
 CSV Parser
 ======
