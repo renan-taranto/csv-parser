@@ -127,14 +127,11 @@ class CsvIterator implements \Iterator
      */
     public function valid(): bool
     {
-        if (
-            !$this->filePointer ||
-            $this->isEndOfFile() ||
-            ($this->limit && $this->rowCounter >= $this->limit)
-        ) {
-            return false;
-        }
-        return true;
+        return
+            $this->filePointer &&
+            !$this->isEndOfFile() &&
+            !($this->limit && $this->rowCounter >= $this->limit)
+        ;
     }
     
     /**
