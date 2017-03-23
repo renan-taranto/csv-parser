@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Taranto\CsvParser;
 
 use org\bovigo\vfs\vfsStream;
@@ -32,13 +34,13 @@ class CsvParserTest extends TestCase
         fclose($fp);
     }
     
-    public function testNonExistingFileThrowsInvalidArgumentException()
+    public function testShouldThrowInvalidArgumentExceptionWhenFileDoesntExist()
     {
         $this->expectException(\InvalidArgumentException::class);
         new CsvParser('non_existing_file.csv');
     }
     
-    public function testGetCsvAsArray()
+    public function testShouldReturnCsvAsArray()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray  = [
@@ -50,7 +52,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsArray());
     }
     
-    public function testGetCsvAsArrayWithOffset()
+    public function testShouldReturnCsvAsArrayWithOffset()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray  = [
@@ -61,7 +63,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsArray(1));
     }
 
-    public function testGetCsvAsArrayWithLimit()
+    public function testShouldReturnCsvAsArrayWithLimit()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray  = [
@@ -72,7 +74,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsArray(0, 3));
     }
   
-    public function testGetCsvAsArrayWithOffsetAndLimit()
+    public function testShouldReturnCsvAsArrayWithOffsetAndLimit()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray  = [
@@ -82,7 +84,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsArray(1, 2));
     }
 
-    public function testGetCsvAsAssociativeArrayIgnoringBlankHeaders()
+    public function testShouldReturnCsvAsAssociativeArrayIgnoringBlankHeaders()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
@@ -93,7 +95,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray());
     }
 
-    public function testGetCsvAsAssociativeArrayWithBlankHeaders()
+    public function testShouldReturnCsvAsAssociativeArrayWithBlankHeaders()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
@@ -104,7 +106,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(0, 0, false));
     }
     
-    public function testGetCsvAsAssociativeArrayWithOffset()
+    public function testShouldReturnCsvAsAssociativeArrayWithOffset()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
@@ -114,7 +116,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(1));
     }
     
-    public function testGetCsvAsAssociativeArrayWithLimit()
+    public function testShouldReturnCsvAsAssociativeArrayWithLimit()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
@@ -123,7 +125,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(0, 1));
     }
     
-    public function testGetCsvAsAssociativeArrayWithOffsetAndLimit()
+    public function testShouldReturnCsvAsAssociativeArrayWithOffsetAndLimit()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
@@ -132,7 +134,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(1, 1));
     }
     
-    public function testGetCsvAsAssociativeArrayWithOffsetAndLimitAndBlankHeaders()
+    public function testShouldReturnCsvAsAssociativeArrayWithOffsetAndLimitAndBlankHeaders()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $expectedArray = [
@@ -141,7 +143,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedArray, $csvParser->getCsvAsAssociativeArray(2, 1, false));
     }
     
-    public function testIterateTroughCsvAsArray()
+    public function testCanIterateTroughCsvAsArray()
     {
         $csvParser = new CsvParser($this->csvFileName);
         $returnedRows = [];
@@ -160,7 +162,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedRows, $returnedRows);
     }
     
-    public function testIterateTroughCsvAsAssociativeArray()
+    public function testCanIterateTroughCsvAsAssociativeArray()
     {
         $csvParser = new CsvParser($this->csvFileName, true);
         $returnedRows = [];
@@ -175,7 +177,7 @@ class CsvParserTest extends TestCase
         $this->assertEquals($expectedRows, $returnedRows);
     }
     
-    public function testIterateTroughCsvAsAssociativeArrayWithOffsetAndLimit()
+    public function testCanIterateTroughCsvAsAssociativeArrayWithOffsetAndLimit()
     {
         $csvParser = new CsvParser($this->csvFileName, true, true, 1, 1);
         $returnedRow = null;

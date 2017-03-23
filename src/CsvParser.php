@@ -99,8 +99,11 @@ class CsvParser implements \IteratorAggregate
      * @param bool $ignoreBlankHeaders
      * @return array
      */
-    public function getCsvAsAssociativeArray(int $offset = 0, int $limit = 0, bool $ignoreBlankHeaders = true): array
-    {
+    public function getCsvAsAssociativeArray(
+        int $offset = 0,
+        int $limit = 0,
+        bool $ignoreBlankHeaders = true
+    ): array {
         $this->iterator->useFirstRowAsHeader($ignoreBlankHeaders)
             ->applyOffset($offset)
             ->setLimit($limit);
